@@ -70,7 +70,7 @@ public class VirtualPetFace extends JFrame implements ActionListener{
     
     public void init() {
         String curDir = System.getProperty("user.dir");
-        
+        curDir += "/cam-v1";
         base = curDir + "/" + imageBase;
         pics = new ArrayList<Image>();
         timer = new Timer(400, this);
