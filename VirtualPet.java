@@ -6,6 +6,7 @@ public class VirtualPet {
     int sleepiness = 0;
     int attention = 25;
     boolean isDead;
+    boolean active = true;
     
     // constructor
     public VirtualPet() {
@@ -18,7 +19,7 @@ public class VirtualPet {
     public void eat() {
         if (hunger == 0){
             face.setMessage("I've been overfed");
-            face.setImage("pushingdaisies");
+            face.setImage("tired");
             isDead = true;
         } 
         else {
@@ -28,19 +29,32 @@ public class VirtualPet {
             else {
                 hunger = 0;
             }
-            face.setMessage("Yum, thanks");
+            face.setMessage("Good Eats");
             face.setImage("normal");
         }
 
         sleepiness += 4;
         attention += 5;
         thirst += 1;
-        deathCheck();
+
         savethePets();
+        deathCheck();
     }
 
     public void drink() {
+        if (thirst > 10){
+            thirst -=10;
+        }
+        else {
+            thirst = 0;
+        }
 
+        hunger -= 2;
+        sleepiness +=1;
+        attention +=3;
+        
+        savethePets();
+        deathCheck();
     }
     
     // go touch some grass !!! googogogogogogo
@@ -52,11 +66,11 @@ public class VirtualPet {
 
         face.setMessage("despair");
         face.setImage("exercising");
-        try {Thread.sleep(2000);} catch(Exception e){}
+        try {Thread.sleep(1000);} catch(Exception e){}
         face.setImage("tired");
 
-        deathCheck();
         savethePets();
+        deathCheck();
     }
     
     // eepy
@@ -74,8 +88,8 @@ public class VirtualPet {
         face.setMessage("I'm sleeping");
         face.setImage("asleep");
 
-        deathCheck();
         savethePets();
+        deathCheck();
     }
 
     public void socialMedia() {
@@ -86,39 +100,44 @@ public class VirtualPet {
 
         face.setMessage("I probably shouldn't be doing this right now");
         face.setImage("enraged");
+        try {Thread.sleep(1999);} catch(Exception e){}
 
-        deathCheck();
         savethePets();
+        deathCheck();
     }
 
-    
+    public void giveUp() {
+        face.setMessage("Goodbye.");
+        face.setImage("angry");
+        active = false;
+    }
 
     // Reminder function 
     public void savethePets() {
         if (hunger >= 10 && hunger < 15){
             face.setMessage("I'm getting hungry, you should feed me");
             face.setImage("starving");
-            try {Thread.sleep(2000);} catch(Exception e){}
+            try {Thread.sleep(870);} catch(Exception e){}
         }
         if (sleepiness >= 50 && sleepiness < 70){
             face.setMessage("I'm getting sleepy, I should probably get some rest...");
             face.setImage("tired");
-            try {Thread.sleep(2000);} catch(Exception e){}
+            try {Thread.sleep(870);} catch(Exception e){}
         }
         if (attention <= 10 && attention > 0) {
             face.setMessage("I need more attention");
             face.setImage("skeleton");
-            try {Thread.sleep(2000);} catch(Exception e){}
+            try {Thread.sleep(870);} catch(Exception e){}
         }
         else if (attention >= 50 && attention < 60) {
             face.setMessage("I'm receiving too much attention");
             face.setImage("skeleton");
-            try {Thread.sleep(2000);} catch(Exception e){}
+            try {Thread.sleep(870);} catch(Exception e){}
         }
         if (thirst >= 20 && thirst > 30) {
             face.setMessage("I am running out of water");
             face.setImage("thirsty");
-            try {Thread.sleep(2000);} catch(Exception e){}
+            try {Thread.sleep(870);} catch(Exception e){}
         }
     }
 
@@ -136,7 +155,7 @@ public class VirtualPet {
 
     public void skeleton(){
         face.setMessage("Skeletor");
-        face.setImage("skelton");
+        face.setImage("skeleton");
     }
 
     // Your pet has died :(
@@ -154,6 +173,11 @@ public class VirtualPet {
             isDead = true;
         }
         return isDead;
+    }
+
+    // returns the state of active, used for "give up"
+    public boolean isActive() {
+        return active;
     }
 
 } // end Virtual Pet

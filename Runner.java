@@ -7,10 +7,12 @@ public class Runner {
         if (ans.equalsIgnoreCase("Good")) {
             p.face.setMessage("You should... NOW");
             p.face.setImage("angry");
+            actTimes(999);
         }
         if (ans.equalsIgnoreCase("bad")) {
             p.face.setMessage("Good >:D");
             p.face.setImage("ecstatic");
+            actTimes(999);
         }
         if (ans.equalsIgnoreCase("meh")) {
             p.face.setMessage("That's CRAZY bro!");
@@ -21,9 +23,23 @@ public class Runner {
             p.face.setImage("astonished");
         }
 
+        liveLoop(p);
+        deathLoop(p, true);
+
+        liveLoop(p);
+        deathLoop(p, false); // resurrection disabled
+
+        // String ans = getAnswer("", "");
+        // if (ans.equalsIgnoreCase("")) {
+        //     p.face.setMessage("");
+        //     p.face.setImage("");
+        // }
+    }
+
+    public void liveLoop(VirtualPet p){
         while (!p.deadCheck()){    
             String ans1 = getAnswer("What would you like me to do? (eat, run, sleep, socialm, drink)", "Activity");
-            if (ans1.equalsIgnoreCase("feed")) {
+            if (ans1.equalsIgnoreCase("eat")) {
                 p.eat();
                 actTimes(999);
             }
@@ -37,16 +53,18 @@ public class Runner {
             }
             if (ans1.equalsIgnoreCase("socialm")) {
                 p.socialMedia();
-                actTimes(3999);
+                actTimes(1999);
             }
             if (ans1.equalsIgnoreCase("drink")) {
                 p.drink();
                 actTimes(999);
             }
         }
+    }
 
-        while (p.deadCheck()) {
-            String ans2 = getAnswer("Your pet has died (oh no, resurrect, skeleton)", "Postmortem");
+    public void deathLoop(VirtualPet p, boolean first){
+        while (p.deadCheck() && p.isActive()) {
+            String ans2 = getAnswer("Your pet has died (oh no, resurrect, skeleton, give up)", "Postmortem");
             if (ans2.equalsIgnoreCase("oh no")) {
                 p.face.setMessage("Sucks to suck");
                 p.face.setImage("cry");
@@ -54,21 +72,26 @@ public class Runner {
                 p.face.setImage("skeleton");
             }
             if (ans2.equalsIgnoreCase("resurrect")) {
-                p.resurrect();
-                actTimes(999);
+                if (first) {
+                    p.resurrect();
+                    actTimes(999);
+                }
+                else {
+                    p.face.setMessage("You can't do that anymore");
+                    p.face.setImage("skeleton");
+                }
             }
             if (ans2.equalsIgnoreCase("skeleton")){
                 p.skeleton();
                 actTimes(999);
             }
+            if (ans2.equalsIgnoreCase("give up")){
+                p.giveUp();
+                actTimes (999);
+            }
         }
-
-        // String ans = getAnswer("", "");
-        // if (ans.equalsIgnoreCase("")) {
-        //     p.face.setMessage("");
-        //     p.face.setImage("");
-        // }
     }
+
 
     public void actTimes (int ms) {
         try {
@@ -90,7 +113,7 @@ public class Runner {
     }
 
     public static void main(String[] args) {
-       new Runner();
+        new Runner();
 
     }
 }
